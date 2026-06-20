@@ -1,0 +1,199 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Deep Blue (深海) — Premium Navy Theme
+   Dark mode (default): deep navy with gold & cyan accents
+   Light mode (.light): Ocean Blue — white bg with blue accents
+   ============================================================ */
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ===== DARK MODE (default) ===== */
+:root {
+  --color-background: #060b14;
+  --color-foreground: #e2e8f0;
+  --color-card-bg: rgba(13, 19, 33, 0.9);
+  --color-card-border: rgba(72, 176, 212, 0.15);
+  --color-glass-bg: rgba(13, 19, 33, 0.7);
+  --color-glass-border: rgba(72, 176, 212, 0.12);
+  --color-glass-strong-bg: rgba(13, 19, 33, 0.85);
+  --color-glass-strong-border: rgba(72, 176, 212, 0.2);
+  --color-muted: rgba(180, 196, 220, 0.5);
+  --color-muted-strong: rgba(200, 215, 235, 0.75);
+  --color-border: rgba(72, 176, 212, 0.06);
+  --color-glow: rgba(72, 176, 212, 0.04);
+  --color-accent-gold: #c9953c;
+  --color-accent-cyan: #48b0d4;
+}
+
+/* ===== LIGHT MODE — Ocean Blue ===== */
+:root.light {
+  --color-background: #fafbfc !important;
+  --color-foreground: #1a1d24 !important;
+  --color-card-bg: rgba(255, 255, 255, 0.95) !important;
+  --color-card-border: rgba(26, 29, 36, 0.10) !important;
+  --color-glass-bg: rgba(255, 255, 255, 0.82) !important;
+  --color-glass-border: rgba(26, 29, 36, 0.06) !important;
+  --color-glass-strong-bg: rgba(255, 255, 255, 0.95) !important;
+  --color-glass-strong-border: rgba(26, 29, 36, 0.12) !important;
+  --color-muted: rgba(26, 29, 36, 0.40) !important;
+  --color-muted-strong: rgba(26, 29, 36, 0.65) !important;
+  --color-border: rgba(26, 29, 36, 0.05) !important;
+  --color-glow: rgba(44, 107, 158, 0.04) !important;
+  --color-accent-gold: #2c6b9e !important;
+  --color-accent-cyan: #4a8fc7 !important;
+}
+
+/* Subtle dot grid background for dark mode */
+:root body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(rgba(72, 176, 212, 0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Deep blue radial glow in center for dark mode */
+:root body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 40%, rgba(72, 176, 212, 0.04) 0%, rgba(6, 11, 20, 0) 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Subtle dot grid for light mode */
+:root.light body::before {
+  background-image:
+    radial-gradient(rgba(26, 29, 36, 0.025) 1px, transparent 1px);
+}
+
+/* Ocean blue radial glow for light mode */
+:root.light body::after {
+  background: radial-gradient(ellipse at 50% 40%, rgba(44, 107, 158, 0.03) 0%, rgba(250, 251, 252, 0) 60%);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(72, 176, 212, 0.08) transparent;
+}
+
+:root.light * {
+  scrollbar-color: rgba(26, 29, 36, 0.08) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 4px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(72, 176, 212, 0.08);
+  border-radius: 2px;
+}
+
+:root.light *::-webkit-scrollbar-thumb {
+  background: rgba(26, 29, 36, 0.08);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Smooth transitions for all interactive elements */
+input, button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Selection color — gold tint */
+::selection {
+  background: rgba(201, 149, 60, 0.2);
+  color: #fafafa;
+}
+
+:root.light ::selection {
+  background: rgba(44, 107, 158, 0.2);
+  color: #111111;
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-glass-border);
+}
+
+.glass-strong {
+  background: var(--color-glass-strong-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--color-glass-strong-border);
+}
+
+/* Card glow — deep blue with cyan shimmer (dark) */
+.card-glow {
+  box-shadow:
+    0 0 0 1px rgba(72, 176, 212, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.4);
+  transition: box-shadow 0.2s ease;
+}
+
+.card-glow:hover {
+  box-shadow:
+    0 0 0 1px rgba(72, 176, 212, 0.2),
+    0 4px 16px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(72, 176, 212, 0.06);
+}
+
+:root.light .card-glow {
+  box-shadow:
+    0 0 0 1px rgba(26, 29, 36, 0.06),
+    0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+:root.light .card-glow:hover {
+  box-shadow:
+    0 0 0 1px rgba(26, 29, 36, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    0 0 20px rgba(44, 107, 158, 0.08);
+}
+
+/* Neon glow for buttons — gold accent */
+.neon-glow {
+  transition: box-shadow 0.3s ease;
+}
+
+:root .neon-glow:hover {
+  box-shadow:
+    0 0 20px rgba(201, 149, 60, 0.15),
+    0 0 40px rgba(201, 149, 60, 0.05);
+}
+
+:root.light .neon-glow:hover {
+  box-shadow:
+    0 0 20px rgba(44, 107, 158, 0.15),
+    0 0 40px rgba(44, 107, 158, 0.05);
+}
+
+/* Table glow */
+.table-glow {
+  background: radial-gradient(ellipse at center, rgba(72, 176, 212, 0.05) 0%, transparent 70%);
+}
+
+:root.light .table-glow {
+  background: radial-gradient(ellipse at center, rgba(44, 107, 158, 0.05) 0%, transparent 70%);
+}

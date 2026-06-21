@@ -8,22 +8,15 @@ const { v4: uuidv4 } = require('uuid');
 // Configuration
 // ============================================================
 const PORT = process.env.PORT || 3001;
-// Allow multiple origins (comma-separated) or fallback to localhost
-const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000';
-const allowedOrigins = CORS_ORIGIN.split(',').map(s => s.trim());
 
+// CORS: allow all origins for development/deployment flexibility
+// In production, set CORS_ORIGIN env var to restrict (comma-separated)
 const corsOptions = {
   origin: function (origin, callback) {
     // Allow requests with no origin (mobile apps, curl, etc.)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.some(o => origin.startsWith(o))) {
-      return callback(null, true);
-    }
-    // Also allow any Vercel preview deployment
-    if (origin.endsWith('.vercel.app')) {
-      return callback(null, true);
-    }
-    callback(null, true); // Allow all in dev mode
+    // Allow any origin (safe for Socket.io with credentials)
+    callback(null, true);
   },
   credentials: true,
 };
@@ -1182,5 +1175,5 @@ io.on('connection', (socket) => {
 // ============================================================
 server.listen(PORT, () => {
   console.log(`[Daifugou Server] Running on port ${PORT}`);
-  console.log(`[Daifugou Server] CORS origin: ${CORS_ORIGIN}`);
+  console.log(`[Daifugou Server] CORS: allowing all origins`);
 });

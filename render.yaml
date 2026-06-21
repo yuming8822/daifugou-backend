@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: daifugou-backend
+    runtime: node
+    repo: https://github.com/yuming8822/daifugou-backend
+    rootDir: daifugou-backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_VERSION
+        value: 18.18.0
+      - key: CORS_ORIGIN
+        value: http://localhost:3000,https://game-beige-seven-93.vercel.app

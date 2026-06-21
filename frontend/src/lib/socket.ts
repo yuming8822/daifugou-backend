@@ -16,22 +16,35 @@ import type {
   CardData,
 } from './types';
 
-// Smart socket URL resolution:
-// 1. Use NEXT_PUBLIC_SOCKET_URL env var if set (for production via .env.production)
-// 2. In production (NODE_ENV === 'production'), default to Render backend
-// 3. In development, fallback to localhost:3001
-const SOCKET_URL =
-  process.env.NEXT_PUBLIC_SOCKET_URL ||
-  (typeof window !== 'undefined' &&
-  (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1')
-    ? 'https://daifugou-backend.onrender.com'
-    : 'http://localhost:3001');
-
 let globalSocket: Socket | null = null;
+
+/**
+ * Resolve the Socket.io server URL at runtime (in the browser).
+ * This MUST be called inside a function, NOT at module top-level,
+ * because Next.js inlines module-level expressions at build time (SSR/Node.js),
+ * where `window` is undefined, causing it to always fallback to localhost:3001.
+ */
+function resolveSocketUrl(): string {
+  // 1. If NEXT_PUBLIC_SOCKET_URL is set (via .env.production or Vercel env), use it
+  if (process.env.NEXT_PUBLIC_SOCKET_URL) {
+    return process.env.NEXT_PUBLIC_SOCKET_URL;
+  }
+  // 2. At runtime in browser, check if we're on a non-localhost domain (Vercel production)
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname;
+    if (host !== 'localhost' && host !== '127.0.0.1') {
+      return 'https://daifugou-backend.onrender.com';
+    }
+  }
+  // 3. Fallback for local development
+  return 'http://localhost:3001';
+}
 
 export function getSocket(): Socket {
   if (!globalSocket) {
-    globalSocket = io(SOCKET_URL, {
+    const url = resolveSocketUrl();
+    console.log('[Socket] Connecting to:', url);
+    globalSocket = io(url, {
       transports: ['polling', 'websocket'],
       reconnection: true,
       reconnectionAttempts: Infinity,
